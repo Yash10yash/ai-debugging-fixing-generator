@@ -1,0 +1,32 @@
+{
+  "name": "ai-debugging-fix-website",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "AI Bug Explainer & Fix Generator for Junior Developers",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && nodemon index.js",
+    "client": "cd client && npm run dev",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "keywords": [
+    "ai",
+    "debugging",
+    "learning",
+    "mentor"
+  ],
+  "author": "Yash",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yash10yash/ai-debugging-fixing-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yash10yash/ai-debugging-fixing-generator/issues"
+  },
+  "homepage": "https://github.com/Yash10yash/ai-debugging-fixing-generator#readme"
+}
