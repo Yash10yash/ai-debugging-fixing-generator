@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+// Use environment variable for production, fallback to proxy for development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 // Configure axios defaults
 axios.defaults.timeout = 30000; // 30 second timeout
@@ -28,7 +29,8 @@ axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-      error.message = 'Cannot connect to server. Make sure the backend is running on port 5000.';
+      const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      error.message = `Cannot connect to server. Make sure the backend is running at ${backendUrl}.`;
     }
     console.error('[API] Response error:', error.message);
     return Promise.reject(error);
