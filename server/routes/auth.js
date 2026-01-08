@@ -90,5 +90,51 @@ router.post('/login', authLimiter, validate(loginSchema), async (req, res) => {
   }
 });
 
+// Check authentication status
+router.get('/check', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.json({ isAuthenticated: false, user: null });
+    }
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.userId).select('-password');
+      
+      if (!user) {
+        return res.json({ isAuthenticated: false, user: null });
+      }
+
+      res.json({
+        isAuthenticated: true,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          skillScore: user.skillScore,
+          experienceLevel: user.experienceLevel || 'beginner',
+          preferredLanguage: user.preferredLanguage || 'hinglish',
+        },
+      });
+    } catch (jwtError) {
+      // Invalid or expired token
+      return res.json({ isAuthenticated: false, user: null });
+    }
+  } catch (error) {
+    console.error('Auth check error:', error);
+    res.json({ isAuthenticated: false, user: null });
+  }
+});
+
+// Logout (optional - mainly for server-side session management)
+router.post('/logout', async (req, res) => {
+  // Since we're using JWT tokens, logout is handled client-side by removing the token
+  // This endpoint is here for consistency and future session-based auth
+  res.json({ message: 'Logout successful' });
+});
+
 export default router;
 
