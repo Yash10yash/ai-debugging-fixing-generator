@@ -28,11 +28,40 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
-      const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      error.message = `Cannot connect to server. Make sure the backend is running at ${backendUrl}.`;
+    const backendUrl = import.meta.env.VITE_API_BASE_URL || '/api';
+    
+    // Handle network errors
+    if (error.code === 'ECONNREFUSED' || 
+        error.message?.includes('Network Error') || 
+        error.message?.includes('Failed to fetch') ||
+        error.code === 'ERR_NETWORK') {
+      
+      // Check if it's a Render service (might be sleeping)
+      if (backendUrl.includes('render.com')) {
+        error.message = `Cannot connect to backend. The Render service might be sleeping (free tier). Please wait 30-60 seconds and try again, or check https://ai-debugging-fixing-generator.onrender.com/api/health`;
+      } else {
+        error.message = `Cannot connect to server. Make sure the backend is running at ${backendUrl}.`;
+      }
     }
-    console.error('[API] Response error:', error.message);
+    
+    // Handle timeout errors
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      error.message = `Request timed out. The backend might be slow to respond. Please try again.`;
+    }
+    
+    // Handle CORS errors
+    if (error.message?.includes('CORS') || error.response?.status === 0) {
+      error.message = `CORS error. The backend might not be allowing requests from this origin. Check backend CORS configuration.`;
+    }
+    
+    console.error('[API] Response error:', {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      url: error.config?.url,
+      backendUrl: backendUrl
+    });
+    
     return Promise.reject(error);
   }
 );
@@ -117,11 +146,29 @@ export const checkAuth = async () => {
 
 export const getHealthStatus = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/health`);
+    const response = await axios.get(`${API_BASE_URL}/health`, {
+      timeout: 10000, // 10 second timeout for health check
+    });
     return response.data;
   } catch (error) {
     console.error('Health check failed:', error);
-    return { status: 'error', message: 'Backend unreachable' };
+    const backendUrl = import.meta.env.VITE_API_BASE_URL || '/api';
+    
+    let message = 'Backend unreachable';
+    if (backendUrl.includes('render.com')) {
+      message = 'Backend might be sleeping (Render free tier). First request may take 30-60 seconds to wake up.';
+    } else if (error.code === 'ECONNREFUSED' || error.message?.includes('Network Error')) {
+      message = 'Cannot connect to backend server';
+    } else if (error.code === 'ECONNABORTED') {
+      message = 'Backend is taking too long to respond';
+    }
+    
+    return { 
+      status: 'error', 
+      message,
+      error: error.message,
+      backendUrl: backendUrl
+    };
   }
 };
 
