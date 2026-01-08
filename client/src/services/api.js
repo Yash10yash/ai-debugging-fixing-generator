@@ -96,8 +96,8 @@ export const loginUser = async (email, password) => {
   return response.data;
 };
 
-export const signupUser = async (username, email, password) => {
-  const response = await axios.post(`${API_BASE_URL}/auth/signup`, { username, email, password });
+export const signupUser = async (name, email, password) => {
+  const response = await axios.post(`${API_BASE_URL}/auth/signup`, { name, email, password });
   return response.data;
 };
 

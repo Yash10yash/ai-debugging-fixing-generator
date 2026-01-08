@@ -14,7 +14,7 @@ router.post('/signup', authLimiter, validate(signupSchema), async (req, res) => 
     // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'User with this email already exists' });
     }
 
     // Create user
@@ -37,11 +37,32 @@ router.post('/signup', authLimiter, validate(signupSchema), async (req, res) => 
         email: user.email,
         role: user.role,
         skillScore: user.skillScore,
+        experienceLevel: user.experienceLevel || 'beginner',
+        preferredLanguage: user.preferredLanguage || 'hinglish',
       },
     });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ error: 'Server error during signup' });
+    
+    // Handle MongoDB duplicate key error
+    if (error.code === 11000) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+    
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const errors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ 
+        error: 'Validation failed',
+        details: errors 
+      });
+    }
+    
+    // Generic server error
+    res.status(500).json({ 
+      error: error.message || 'Server error during signup',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
