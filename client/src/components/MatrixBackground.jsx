@@ -65,18 +65,6 @@ const MatrixBackground = () => {
 };
 
 export default MatrixBackground;
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
-      style={{ 
-        mixBlendMode: 'screen',
-        opacity: 0.12
-      }}
-    />
   );
 };
 
