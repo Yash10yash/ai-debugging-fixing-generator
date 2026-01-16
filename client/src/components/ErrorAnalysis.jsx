@@ -40,9 +40,9 @@ const ErrorAnalysis = ({ analysis, errorLogId, errorInput, errorType, onQuizComp
   ];
 
   return (
-    <div className="glass rounded-2xl shadow-2xl p-8 hover-lift border border-cyber-red/40 animate-slideIn">
+    <div className="glass rounded-2xl shadow-2xl p-8 hover-lift border border-cyber-red/40 bg-white/80 animate-slideIn">
       <div className="mb-6">
-        <div className="flex space-x-2 bg-cyber-black p-1 rounded-xl border border-cyber-red/40">
+        <div className="flex space-x-2 bg-gray-100 p-1 rounded-xl border border-cyber-red/40 shadow-sm">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -50,7 +50,7 @@ const ErrorAnalysis = ({ analysis, errorLogId, errorInput, errorType, onQuizComp
               className={`flex-1 px-4 py-3 font-mono font-bold text-sm rounded-lg transition-all duration-300 ${
                 activeTab === tab.id
                   ? 'bg-red-gradient text-white shadow-lg transform scale-105 cyber-glow'
-                  : 'text-gray-300 hover:text-white hover:bg-cyber-gray border border-cyber-red/30'
+                  : 'text-gray-700 hover:text-white hover:bg-gray-200 border border-cyber-red/30'
               }`}
             >
               [{tab.label.toUpperCase()}]

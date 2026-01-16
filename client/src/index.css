@@ -9,30 +9,30 @@ body {
   font-family: 'Inter', 'Courier New', 'Monaco', 'Consolas', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #000000;
+  background: #ffffff;
   background-image: 
     /* Subtle grid pattern */
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 50px,
-      rgba(220, 20, 60, 0.02) 50px,
-      rgba(220, 20, 60, 0.02) 51px
+      rgba(34, 197, 94, 0.02) 50px,
+      rgba(34, 197, 94, 0.02) 51px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 50px,
-      rgba(220, 20, 60, 0.02) 50px,
-      rgba(220, 20, 60, 0.02) 51px
+      rgba(34, 197, 94, 0.02) 50px,
+      rgba(34, 197, 94, 0.02) 51px
     ),
     /* Subtle radial glows */
-    radial-gradient(circle at 10% 20%, rgba(220, 20, 60, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(220, 20, 60, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+    radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
   background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
   min-height: 100vh;
-  color: #ffffff;
+  color: #1a1a1a;
   position: relative;
   overflow-x: hidden;
 }
@@ -78,10 +78,10 @@ body::after {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(255, 23, 68, 0.6),
+    rgba(34, 197, 94, 0.3),
     transparent
   );
-  box-shadow: 0 0 15px rgba(255, 23, 68, 0.6);
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
   animation: scan 10s linear infinite;
   pointer-events: none;
   z-index: 1;
