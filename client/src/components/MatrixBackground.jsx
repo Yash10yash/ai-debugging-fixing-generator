@@ -84,8 +84,4 @@ const MatrixBackground = () => {
 };
 
 export default MatrixBackground;
-  );
-};
-
-export default MatrixBackground;
 
