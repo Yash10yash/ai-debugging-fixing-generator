@@ -1,6 +1,6 @@
 # AI Bug Explainer & Fix Generator for Junior Developers
 
-A production-ready full-stack web application that helps junior developers understand and fix errors using AI-powered explanations in Hinglish.
+A production-ready full-stack web application that helps junior developers understand and fix errors using AI-powered explanations in multiple languages.
 
 ## Features
 
